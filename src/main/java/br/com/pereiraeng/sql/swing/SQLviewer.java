@@ -32,7 +32,8 @@ import javax.swing.event.ListSelectionListener;
 
 import br.com.pereiraeng.core.StringUtils;
 import br.com.pereiraeng.core.collections.ArrayUtils;
-import br.com.pereiraeng.office.Office;
+import br.com.pereiraeng.icons.PereiraIcon;
+import br.com.pereiraeng.office.sql.OfficeSql;
 import br.com.pereiraeng.sql.SQLadapter;
 import br.com.pereiraeng.sql.SQLconfig;
 import br.com.pereiraeng.sql.Server;
@@ -97,14 +98,14 @@ public class SQLviewer implements App, ActionListener, ListSelectionListener, Ch
 
 		// barra principal
 
-		p.add(SwingUtils.getBar("images",
-				new String[][][] {
-						{ { "Import24.gif", "I", "Conexão a uma BD SQL cujos parâmetros estão num arquivo XML" },
-								{ "Edit.gif", "E",
-										"Conexão a uma BD SQL cujos parâmetros serão digitados pelo usuário" } },
-						{ { "Open.gif", "O", "Carregar arquivo XML para leitura de uma das tabelas da BD SQL" },
-								{ "close.png", "U", "Descarregar arquivo XML para leitura da tabela" } },
-						{ { "Export24.gif", "e", "Exportar tabela" }, { "tab.png", "f", "Listar campos da tbela" } } },
+		p.add(SwingUtils.getBar(new String[][][] {
+				{ { PereiraIcon.IMPORT.getPath(), "I", "Conexão a uma BD SQL cujos parâmetros estão num arquivo XML" },
+						{ PereiraIcon.EDIT.getPath(), "E",
+								"Conexão a uma BD SQL cujos parâmetros serão digitados pelo usuário" } },
+				{ { PereiraIcon.OPEN.getPath(), "O", "Carregar arquivo XML para leitura de uma das tabelas da BD SQL" },
+						{ PereiraIcon.CLOSE.getPath(), "U", "Descarregar arquivo XML para leitura da tabela" } },
+				{ { PereiraIcon.EXPORT.getPath(), "e", "Exportar tabela" },
+						{ PereiraIcon.TAB.getPath(), "f", "Listar campos da tbela" } } },
 				this), BorderLayout.NORTH);
 
 		Grade g = new Grade();
@@ -430,9 +431,9 @@ public class SQLviewer implements App, ActionListener, ListSelectionListener, Ch
 			if (file != null) {
 				if (xml == null)
 					// modo geral: baixa todos os campos de uma tabela
-					Office.export(file, sql.query("SELECT * FROM `" + table + "` WHERE 1"));
+					OfficeSql.export(file, sql.query("SELECT * FROM `" + table + "` WHERE 1"));
 				else // modo xml: baixa só o que interessa
-					Office.export(file, sql.query(xml.getAllQuery()));
+					OfficeSql.export(file, sql.query(xml.getAllQuery()));
 			}
 			break;
 		case 'f': // listar campos da tabela

@@ -1,6 +1,7 @@
 package br.com.pereiraeng.sql.swing;
 
 import java.awt.Component;
+import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -10,6 +11,7 @@ import javax.swing.JPanel;
 
 import br.com.pereiraeng.core.Password;
 import br.com.pereiraeng.icons.Icons;
+import br.com.pereiraeng.icons.PereiraIcon;
 import br.com.pereiraeng.sql.SQLconfig;
 import br.com.pereiraeng.sql.Server;
 import br.com.pereiraeng.swing.SwingUtils;
@@ -31,23 +33,23 @@ public class SQLconfigPanel extends JPanel implements Input<SQLconfig>, ActionLi
 
 	public SQLconfigPanel() {
 
-		JButton b = new JButton(Icons.loadUtilsIcon("Import24.gif"));
-		b.setPreferredSize(SwingUtils.DIM_BUTTON_ICON);
+		JButton b = new JButton(PereiraIcon.IMPORT.create());
+		b.setPreferredSize(Icons.DIM_BUTTON_ICON);
 		b.setToolTipText("Conexão a uma BD SQL cujos parâmetros estão num arquivo XML");
 		b.addActionListener(this);
 		b.setActionCommand("I");
 		add(b);
 
-		b = new JButton(Icons.loadUtilsIcon("Edit.gif"));
-		b.setPreferredSize(SwingUtils.DIM_BUTTON_ICON);
+		b = new JButton(PereiraIcon.EDIT.create());
+		b.setPreferredSize(Icons.DIM_BUTTON_ICON);
 		b.addActionListener(this);
 		b.setToolTipText("Conexão a uma BD SQL cujos parâmetros serão digitados pelo usuário");
 		b.setActionCommand("E");
 		add(b);
 
-		b = new JButton(Icons.loadUtilsIcon("Refresh.gif"));
+		b = new JButton(PereiraIcon.REFRESH.create());
 		b.setToolTipText("Tentar (re)estabelecer conexão com a BD SQL");
-		b.setPreferredSize(SwingUtils.DIM_BUTTON_ICON);
+		b.setPreferredSize(Icons.DIM_BUTTON_ICON);
 		b.addActionListener(this);
 		b.setActionCommand(REFRESH);
 		add(b);
@@ -78,7 +80,8 @@ public class SQLconfigPanel extends JPanel implements Input<SQLconfig>, ActionLi
 		switch (command) {
 		case "I": // conectar a uma base de dados SQL cujos parâmetros estão num
 			// arquivo XML
-			File xmlfile = FileChooser.fileChooserLoad("files", new FileFilterAdapter("xml"), SwingUtils.getWindow(this));
+			File xmlfile = FileChooser.fileChooserLoad("files", new FileFilterAdapter("xml"),
+					SwingUtils.getWindow(this));
 			if (xmlfile != null)
 				this.config = SQLconfig.loadConfig(xmlfile);
 			break;
@@ -96,7 +99,7 @@ public class SQLconfigPanel extends JPanel implements Input<SQLconfig>, ActionLi
 				oldValues[4] = new Password((String) oldValues[4]);
 			}
 			Object[] params = FillingFields.fillFields(SwingUtils.getWindow(this), "Conectar à base de dados",
-					SQLconfig.HEADER, oldValues);
+					SQLconfig.HEADER, oldValues); // TODO usar askLogin, que está logo ali em baixo!!!!
 			if (params != null) {
 				int porta = (int) params[2];
 				this.config = new SQLconfig((Server) params[0], (String) params[1],
@@ -126,5 +129,33 @@ public class SQLconfigPanel extends JPanel implements Input<SQLconfig>, ActionLi
 	@Override
 	public Component getComponent() {
 		return this;
+	}
+
+	/**
+	 * Função que pede o login e senha para o usuário para inserí-la no objeto de
+	 * configuração de base de dados
+	 * 
+	 * @param owner   janela a qual pertence a caixa de diálogo
+	 * @param config  objeto de configuração de base de dados
+	 * @param confirm mesmo se a senha e login tenham sido fornecidos, mostra-se a
+	 *                caixa de diálogo
+	 */
+	public static void askLogin(Window owner, SQLconfig config, boolean confirm) {
+		String login = config.getLogin();
+		String password = config.getPassword();
+		Object[] os = null;
+		if (login == null || password == null ? true : confirm) {
+			os = FillingFields.fillFields(owner, "Configurações da base de dados",
+					new String[] { SQLconfig.HEADER[3], SQLconfig.HEADER[4] },
+					new Object[] { login, new Password(password) });
+			if (os != null) {
+				login = (String) os[0];
+				if (login.length() > 0)
+					config.setLogin(login);
+				password = (String) os[1];
+				if (password.length() > 0)
+					config.setPassword(password);
+			}
+		}
 	}
 }
