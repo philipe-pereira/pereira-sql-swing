@@ -39,4 +39,19 @@
 			<version>1.0.0</version>
 		</dependency>
 	</dependencies>
+
+	<repositories>
+		<repository>
+			<id>github</id>
+			<url>https://maven.pkg.github.com/philipe-pereira/*</url>
+		</repository>
+	</repositories>
+
+	<distributionManagement>
+		<repository>
+			<id>github</id>
+			<name>GitHub Packages</name>
+			<url>https://maven.pkg.github.com/philipe-pereira/pereira-sql-swing</url>
+		</repository>
+	</distributionManagement>
 </project>
