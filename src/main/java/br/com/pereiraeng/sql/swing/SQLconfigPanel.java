@@ -13,7 +13,7 @@ import br.com.pereiraeng.core.Password;
 import br.com.pereiraeng.icons.Icons;
 import br.com.pereiraeng.icons.PereiraIcon;
 import br.com.pereiraeng.sql.SQLconfig;
-import br.com.pereiraeng.sql.Server;
+import br.com.pereiraeng.sql.DatabaseEngine;
 import br.com.pereiraeng.swing.SwingUtils;
 import br.com.pereiraeng.swing.dialog.FillingFields;
 import br.com.pereiraeng.swing.image.LabelPointer;
@@ -102,7 +102,7 @@ public class SQLconfigPanel extends JPanel implements Input<SQLconfig>, ActionLi
 					SQLconfig.HEADER, oldValues); // TODO usar askLogin, que está logo ali em baixo!!!!
 			if (params != null) {
 				int porta = (int) params[2];
-				this.config = new SQLconfig((Server) params[0], (String) params[1],
+				this.config = new SQLconfig((DatabaseEngine) params[0], (String) params[1],
 						porta < 0 ? "" : String.valueOf(porta), (String) params[3], (String) params[4],
 						(String) params[5]);
 				// TODO usar SQLconfig#askLogin

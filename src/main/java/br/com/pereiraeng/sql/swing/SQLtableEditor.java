@@ -18,7 +18,7 @@ import javax.swing.SwingConstants;
 import br.com.pereiraeng.core.StringUtils;
 import br.com.pereiraeng.core.collections.ArrayUtils;
 import br.com.pereiraeng.sql.SQLadapter;
-import br.com.pereiraeng.sql.Server;
+import br.com.pereiraeng.sql.DatabaseEngine;
 import br.com.pereiraeng.swing.SwingUtils;
 import br.com.pereiraeng.swing.button.CUDpanel;
 import br.com.pereiraeng.swing.dialog.FillingFields;
@@ -161,7 +161,7 @@ public class SQLtableEditor extends JPanel implements ActionListener {
 		}
 	}
 
-	private static String getWhere(String[] allFields, Object[] allValues, int[] primaryKeys, Server type) {
+	private static String getWhere(String[] allFields, Object[] allValues, int[] primaryKeys, DatabaseEngine type) {
 		String[] fields = null;
 		Object[] values = null;
 		if (primaryKeys.length > 0) {

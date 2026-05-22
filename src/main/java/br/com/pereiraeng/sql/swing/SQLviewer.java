@@ -36,7 +36,7 @@ import br.com.pereiraeng.icons.PereiraIcon;
 import br.com.pereiraeng.office.sql.OfficeSql;
 import br.com.pereiraeng.sql.SQLadapter;
 import br.com.pereiraeng.sql.SQLconfig;
-import br.com.pereiraeng.sql.Server;
+import br.com.pereiraeng.sql.DatabaseEngine;
 import br.com.pereiraeng.sql.XMLsql;
 import br.com.pereiraeng.swing.App;
 import br.com.pereiraeng.swing.Grade;
@@ -162,7 +162,7 @@ public class SQLviewer implements App, ActionListener, ListSelectionListener, Ch
 		loadDataBase();
 	}
 
-	private void loadDataBase(Server serverType, String server, String port, String login, String password, String db) {
+	private void loadDataBase(DatabaseEngine serverType, String server, String port, String login, String password, String db) {
 		this.sql = new SQLadapter(serverType, server, port, login, password, db);
 		loadDataBase();
 	}
@@ -400,7 +400,7 @@ public class SQLviewer implements App, ActionListener, ListSelectionListener, Ch
 					oldValues);
 			if (params != null) {
 				int porta = (int) params[2];
-				loadDataBase((Server) params[0], (String) params[1], porta < 0 ? "" : String.valueOf(porta),
+				loadDataBase((DatabaseEngine) params[0], (String) params[1], porta < 0 ? "" : String.valueOf(porta),
 						(String) params[3], (String) params[4], (String) params[5]);
 			}
 			break;
